@@ -5,10 +5,13 @@ function createProductImageElement(imageSource) {
   return img;
 }
 
-function createCustomElement(element, className, innerText) {
+function createCustomElement(element, className, innerText, sku) {
   const e = document.createElement(element);
   e.className = className;
   e.innerText = innerText;
+  if (element === 'button') {
+    e.setAttribute('onclick', `appendCart('${sku}')`);
+  }
   return e;
 }
 
@@ -19,7 +22,7 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!', sku));
 
   return section;
 }
@@ -48,6 +51,13 @@ const show = async () => {
     document.querySelector('.items').appendChild(createProductItemElement({ sku, name, image }));
   });
   await console.log(dados.results);
+};
+
+const appendCart = async (idProduto) => {
+  const dados = await fetchItem(idProduto);
+  const ol = document.querySelector('.cart__items');  
+  const { id: sku, title: name, price: salePrice } = dados;
+  ol.appendChild(createCartItemElement({ sku, name, salePrice })); 
 };
 
 window.onload = async () => {
