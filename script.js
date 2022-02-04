@@ -41,8 +41,7 @@ const show = async () => {
   dados.results.forEach((produto) => {
     const { id: sku, title: name, thumbnail: image } = produto;
     document.querySelector('.items').appendChild(createProductItemElement({ sku, name, image }));
-  });
-  await console.log(dados.results);
+  });  
 };
 
 const appendCart = async (idProduto) => {
@@ -51,10 +50,14 @@ const appendCart = async (idProduto) => {
   const { id: sku, title: name, price: salePrice } = dados;
   await ol.appendChild(createCartItemElement({ sku, name, salePrice }));
   localStorage.clear();
-  saveCartItems(document.querySelector('.cart__items').innerHTML);
+  saveCartItems(ol.innerHTML);
+};
+
+const loadSaved = () => {
+  document.querySelector('.cart__items').innerHTML = getSavedCartItems();
 };
 
 window.onload = async () => {
-  await getSavedCartItems();
+  await loadSaved();
   await show();
 };
