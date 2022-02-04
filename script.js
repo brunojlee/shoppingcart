@@ -53,11 +53,24 @@ const appendCart = async (idProduto) => {
   saveCartItems(ol.innerHTML);
 };
 
+function carregando() {
+    const section = document.createElement('section');
+    section.textContent = 'carregando...';
+    section.className = 'loading';
+    document.querySelector('.items').appendChild(section);
+}
+
+function fechaCarregando() {
+  document.querySelector('.loading').remove();
+}
+
 const loadSaved = () => {
   document.querySelector('.cart__items').innerHTML = getSavedCartItems();
 };
 
 window.onload = async () => {
+  await carregando();
   await loadSaved();
   await show();
+  fechaCarregando();
 };
