@@ -31,7 +31,8 @@ function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;  
-  li.setAttribute('onclick', 'this.remove(); saveCartItems();');
+  li.setAttribute('onclick',
+  'this.remove(); saveCartItems(document.querySelector(".cart__items").innerHTML);');
   return li;
 }
 
@@ -50,7 +51,7 @@ const appendCart = async (idProduto) => {
   const { id: sku, title: name, price: salePrice } = dados;
   await ol.appendChild(createCartItemElement({ sku, name, salePrice }));
   localStorage.clear();
-  saveCartItems();
+  saveCartItems(document.querySelector('.cart__items').innerHTML);
 };
 
 window.onload = async () => {
