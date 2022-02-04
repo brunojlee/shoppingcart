@@ -57,6 +57,7 @@ const appendCart = async (idProduto) => {
   const ol = document.querySelector('.cart__items');  
   const { id: sku, title: name, price: salePrice } = dados;
   await ol.appendChild(createCartItemElement({ sku, name, salePrice }));
+  localStorage.clear();
   saveCartItems();
 };
 

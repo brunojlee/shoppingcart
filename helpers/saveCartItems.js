@@ -1,6 +1,5 @@
 const saveCartItems = () => {
-  const cartHolder = document.querySelector('.cart__items');
-  localStorage.clear();
+  const cartHolder = document.querySelector('.cart__items');  
   localStorage.setItem('cartItems', cartHolder.innerHTML);
 };
 
