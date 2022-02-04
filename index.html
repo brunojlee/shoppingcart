@@ -30,7 +30,7 @@
       <section class="items"></section>
       <section class="cart">
         <ol class="cart__items"></ol>
-        <button class="empty-cart" onclick="document.querySelector('.cart__items').innerHTML = ''; precoTotal = 0;">Esvaziar carrinho</button>
+        <button class="empty-cart" onclick="document.querySelector('.cart__items').innerHTML = ''; localStorage.clear(); precoTotal = 0;">Esvaziar carrinho</button>
       </section>
     </section>
   </body>

@@ -1,4 +1,3 @@
-let precoTotal = 0;
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -41,7 +40,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
-  precoTotal += salePrice;
   return li;
 }
 
@@ -58,9 +56,11 @@ const appendCart = async (idProduto) => {
   const dados = await fetchItem(idProduto);
   const ol = document.querySelector('.cart__items');  
   const { id: sku, title: name, price: salePrice } = dados;
-  ol.appendChild(createCartItemElement({ sku, name, salePrice })); 
+  await ol.appendChild(createCartItemElement({ sku, name, salePrice }));
+  saveCartItems();
 };
 
 window.onload = async () => {
+  getSavedCartItems();
   await show();
 };
