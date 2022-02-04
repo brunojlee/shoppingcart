@@ -31,12 +31,12 @@ let precoTotal = 0;
 
 function dec(subtraendo) {
   precoTotal -= subtraendo;
-  document.querySelector('.total-price').innerText = precoTotal.toFixed(2);
+  document.querySelector('.total-price').innerText = parseFloat(precoTotal.toFixed(2));
 }
 
 function adi(aditivo) {
-  precoTotal += parseFloat(aditivo.toFixed(2));
-  document.querySelector('.total-price').innerText = precoTotal.toFixed(2);
+  precoTotal += aditivo;
+  document.querySelector('.total-price').innerText = parseFloat(precoTotal.toFixed(2));
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
