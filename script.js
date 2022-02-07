@@ -1,3 +1,6 @@
+const ol = document.querySelector('.cart__items');
+const priceHolder = document.querySelector('.total-price');
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -31,12 +34,12 @@ let precoTotal = 0;
 
 function dec(subtraendo) {
   precoTotal -= subtraendo;
-  document.querySelector('.total-price').innerText = parseFloat(precoTotal.toFixed(2));
+  priceHolder.innerText = parseFloat(precoTotal.toFixed(2));
 }
 
 function adi(aditivo) {
   precoTotal += aditivo;
-  document.querySelector('.total-price').innerText = parseFloat(precoTotal.toFixed(2));
+  priceHolder.innerText = parseFloat(precoTotal.toFixed(2));
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -60,12 +63,18 @@ const show = async () => {
 
 const appendCart = async (idProduto) => {
   const dados = await fetchItem(idProduto);
-  const ol = document.querySelector('.cart__items');  
   const { id: sku, title: name, price: salePrice } = dados;
   await ol.appendChild(createCartItemElement({ sku, name, salePrice }));  
   localStorage.clear();
   saveCartItems(ol.innerHTML);
 };
+
+function cleanCart() {
+  document.querySelector('.cart__items').innerHTML = '';
+  localStorage.clear();
+  precoTotal = 0;
+  document.querySelector('.total-price').innerText = parseFloat(precoTotal.toFixed(2));
+}
 
 function carregando() {
     const section = document.createElement('section');
@@ -79,8 +88,10 @@ function fechaCarregando() {
 }
 
 const loadSaved = () => {
-  document.querySelector('.cart__items').innerHTML = getSavedCartItems();
+  ol.innerHTML = getSavedCartItems();
 };
+
+document.querySelector('.empty-cart').addEventListener('click', cleanCart);
 
 window.onload = async () => {
   await carregando();
