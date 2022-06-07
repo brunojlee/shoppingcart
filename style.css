@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: Epilogue, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -127,6 +127,15 @@ body {
   color: white;
 }
 
+.item__price{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 10px;
+  text-align: center;
+}
+
 .cart {
   display: flex;
   flex-basis: 32%;
@@ -146,4 +155,20 @@ body {
   margin: 0 auto;
   border: 2px solid rgb(5, 52, 219);
   background-color: rgb(249, 249, 246);
+}
+
+.cart__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid rgb(234, 234, 233);
+}
+
+.cart__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid rgb(234, 234, 233);
 }

@@ -18,55 +18,61 @@ function createCustomElement(element, className, innerText, sku) {
   return e;
 }
 
-function createProductItemElement({ sku, name, image }) {
+function createProductItemElement({ sku, name, image, salePrice }) {
   const section = document.createElement('section');
   section.className = 'item';
 
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
+  section.appendChild(createCustomElement('span', 'item__price', `Preço: R$${salePrice}`));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!', sku));
 
   return section;
 }
-
-let precoTotal = 0;
+const precoSalvo = +localStorage.getItem('precoTotal');
+let precoTotal = precoSalvo;
+priceHolder.innerText = `R$${parseFloat(precoTotal.toFixed(2))}`;
 
 function dec(subtraendo) {
   precoTotal -= subtraendo;
-  priceHolder.innerText = parseFloat(precoTotal.toFixed(2));
+  priceHolder.innerText = `R$${parseFloat(precoTotal.toFixed(2))}`;
 }
 
 function adi(aditivo) {
   precoTotal += aditivo;
-  priceHolder.innerText = parseFloat(precoTotal.toFixed(2));
+  priceHolder.innerText = `R$${parseFloat(precoTotal.toFixed(2))}`;
 }
 
-function createCartItemElement({ sku, name, salePrice }) {
+function createCartItemElement({ name, salePrice, thumbnail }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;  
+  li.innerHTML = `<div>${name} | PRICE: $${salePrice}</div>`; 
+  li.insertAdjacentElement('afterbegin', createProductImageElement(thumbnail));
   li.id = salePrice;
   li.setAttribute('onclick',
-  'this.remove(); dec(this.id); saveCartItems(document.querySelector(".cart__items").innerHTML);');
-  adi(salePrice);
+  `this.remove(); dec(this.id);
+   saveCartItems(document.querySelector(".cart__items").innerHTML, precoTotal);`);
+  
+  adi(+salePrice.toFixed(2));
   return li;
 }
 
 const show = async () => {
   const dados = await fetchProducts('computador');
   dados.results.forEach((produto) => {
-    const { id: sku, title: name, thumbnail: image } = produto;
-    document.querySelector('.items').appendChild(createProductItemElement({ sku, name, image }));
+    const { id: sku, title: name, thumbnail: image, price: salePrice } = produto;
+    document
+    .querySelector('.items').appendChild(createProductItemElement({ sku, name, image, salePrice }));
   });  
 };
 
 const appendCart = async (idProduto) => {
   const dados = await fetchItem(idProduto);
-  const { id: sku, title: name, price: salePrice } = dados;
-  await ol.appendChild(createCartItemElement({ sku, name, salePrice }));  
+  const { id: sku, title: name, price: salePrice, thumbnail } = dados;
+  await ol.appendChild(createCartItemElement({ sku, name, salePrice, thumbnail }));  
   localStorage.clear();
-  saveCartItems(ol.innerHTML);
+  saveCartItems(ol.innerHTML, precoTotal);
 };
 
 function cleanCart() {
